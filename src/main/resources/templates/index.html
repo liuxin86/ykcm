@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="favicon.ico">
+  <title>一颗草莓</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <script src="js/jquery-3.5.1.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/vue.js"></script>
+  <script src="layer/layer.js"></script>
+  <style>
+    body {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .navbar {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Project name</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">首页</a></li>
+              <li><a href="#">联系我</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">下拉列表 <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">第一行</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li class="dropdown-header">分割线</li>
+                  <li><a href="#">第二行</a></li>
+                </ul>
+              </li>
+            </ul>
+            <ul v-if="!isLogin" class="nav navbar-nav navbar-right">
+              <li><a href="javascript:void(0);" onclick="vm.userLogin()">登录</a></li>
+              <li><a href="javascript:void(0);">注册</a></li>
+            </ul>
+            <ul v-else class="nav navbar-nav navbar-right">
+              <li><a href="/login">刘鑫</a></li>
+              <li><a href="javascript:void(0);" onclick="vm.logout()">退出</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="jumbotron">
+        <h1>Hello World</h1>
+        <p></p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="" role="button">点我 &raquo;</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+<script>
+  var vm = new Vue({
+    el:"#app",
+    data:{
+      isLogin: false
+    },
+    mounted:function () {
+
+    },
+    methods:{
+      login: function (){
+        layer.open({
+          type: 2,
+          content: 'login.html',
+          area: ['100%', '100%'],
+          maxmin: true
+        });
+      },
+      register: function (){
+
+      },
+      logout: function (){
+        $.get('/user/logout', function(r){
+          if(r.code == 0){
+            vm.isLogin = false;
+          }
+        });
+      },
+      userLogin: function(){
+        layer.open({
+          title: '登录',
+          btn: ['确定'],
+          content: /*'<div class="layui-form-item">' +*/
+                  '<div class="form-group input-search-start">' +
+                  '<label for="username" class="sr-only">用户名</label>' +
+                  '<input type="text" id="username" name="username" class="form-control" placeholder="用户名" required autofocus>' +
+                  '<label for="password" class="sr-only">密码</label>' +
+                  '<input type="password" id="password" name="password" class="form-control" placeholder="密码" required>' +
+                  '' +
+                  '' +
+                  '' +
+                  '</div>',
+          yes: function(index){
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var params = {
+              "username":username,
+              "password":password
+            };
+            console.log(params);
+            $.ajax({
+              type: "POST",
+              dataType: "json",
+              url: "/user/login",
+              contentType : "application/json",
+              data: JSON.stringify(params),
+              success: function(r){
+                if(r.code == 0){
+                  vm.isLogin = true;
+                  layer.close(index);
+                }else{
+                  alert(r.msg);
+                }
+              }
+            });
+          }
+        });
+      },
+    },
+    created(){
+      window.vm = this;
+    }
+  });
+</script>
