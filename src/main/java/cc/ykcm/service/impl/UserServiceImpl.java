@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+
 /**
  * @author admin
  */
@@ -47,5 +49,23 @@ public class UserServiceImpl implements UserService {
         // 将加密后的密码放入 user 中
         user.setPassword(md5Hash.toHex());
         userDao.insert(user);
+    }
+
+    /**
+     * 修改用户信息
+     * @param user
+     */
+    @Override
+    public void update(User user) {
+        userDao.updateById(user);
+    }
+
+    /**
+     * 根据id删除用户
+     * @param ids
+     */
+    @Override
+    public void delete(long[] ids) {
+        userDao.deleteBatchIds(Arrays.asList(ids));
     }
 }

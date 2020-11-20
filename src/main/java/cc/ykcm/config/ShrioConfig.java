@@ -33,27 +33,32 @@ public class ShrioConfig {
 
         Map<String,String> map = Maps.newHashMap();
         // 配置系统公共资源
-        map.put("/css/**","anon");
-        map.put("/js/**","anon");
+        // 放行静态资源
         map.put("/static/**","anon");
+        map.put("/assets/**","anon");
+        map.put("/css/**","anon");
+        map.put("/fonts/**","anon");
+        map.put("/img/**","anon");
+        map.put("/js/**","anon");
         map.put("/layer/**","anon");
+        map.put("/plugins/**","anon");
         map.put("/favicon.ico","anon");
         // 用户登录
         map.put("/user/login","anon");
         // 用户注册
         map.put("/user/register","anon");
         // 主页
-        map.put("/index","anon");
-        // 注册页面
-        map.put("/register","anon");
         map.put("/","anon");
+        // 主页 登录 注册 页面 以及 初始化信息
+        map.put("/index/**","anon");
+
         // 配置系统受限资源
         map.put("/**","authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
 
         // 默认 认证界面路径
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setLoginUrl("/index/login");
         return shiroFilterFactoryBean;
     }
 
