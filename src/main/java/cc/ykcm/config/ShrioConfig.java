@@ -2,6 +2,7 @@ package cc.ykcm.config;
 
 import cc.ykcm.shiro.realms.YkcmRealm;
 import com.google.common.collect.Maps;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -37,8 +38,14 @@ public class ShrioConfig {
         map.put("/static/**","anon");
         map.put("/layer/**","anon");
         map.put("/favicon.ico","anon");
+        // 用户登录
         map.put("/user/login","anon");
+        // 用户注册
+        map.put("/user/register","anon");
+        // 主页
         map.put("/index","anon");
+        // 注册页面
+        map.put("/register","anon");
         map.put("/","anon");
         // 配置系统受限资源
         map.put("/**","authc");
@@ -63,11 +70,17 @@ public class ShrioConfig {
     /**
      * 创建自定义realm
      */
-    @Bean
+    @Bean("realm")
     public Realm realm(){
-        return new YkcmRealm();
+        YkcmRealm realm = new YkcmRealm();
+        // 设置 hash 凭证匹配器
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        // 设置 md5 加密
+        credentialsMatcher.setHashAlgorithmName("md5");
+        // 设置散列次数
+        credentialsMatcher.setHashIterations(1024);
+        // 将 凭证匹配器 赋值  给realm
+        realm.setCredentialsMatcher(credentialsMatcher);
+        return realm;
     }
-
-
-
 }

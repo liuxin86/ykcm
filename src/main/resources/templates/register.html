@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>登录</title>
+    <script src="js/jquery-3.5.1.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/signin.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2 class="form-signin-heading" style="text-align: center">请注册</h2>
+    <label for="username" class="sr-only">用户名</label>
+    <input type="text" id="username" name="username" class="form-control" placeholder="用户名" required autofocus>
+    <label for="password" class="sr-only">密码</label>
+    <input type="password" id="password" name="password" class="form-control" placeholder="密码" required>
+    <button class="btn btn-lg btn-primary btn-block" onclick="register()">注册</button>
+</div>
+</body>
+</html>
+<script>
+    function register(){
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var params = {
+            username:username,
+            password:password
+        };
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/user/register",
+            contentType : "application/json",
+            data: JSON.stringify(params),
+            success: function(r){
+                if(r.code == 0){
+                    alert(r.msg)
+                    window.vm.isLogin = true;
+                }else{
+                    alert(r.msg);
+                }
+            }
+        });
+    }
+</script>

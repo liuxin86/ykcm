@@ -51,14 +51,14 @@ public class UserController extends BaseController{
      * 注册
      */
     @RequestMapping("register")
-    public R register(User user){
+    public R register(@RequestBody User user){
         try {
             userService.save(user);
         }catch (Exception e){
             e.printStackTrace();
             R.error("注册失败");
         }
-        return R.ok();
+        return R.ok("注册成功");
     }
 
     /**

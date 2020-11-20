@@ -3,7 +3,13 @@ package cc.ykcm.utils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
+/**
+ * 用于 获取 bean对象
+ * @author admin
+ */
+@Component
 public class ApplicationContextUtils implements ApplicationContextAware {
 
     private static ApplicationContext context;
