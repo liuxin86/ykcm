@@ -15,7 +15,7 @@
         <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
         <druid.version>1.2.3</druid.version>
         <mybatis.plus.version>3.4.1</mybatis.plus.version>
-        <guava.version>30.0-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
     </properties>
 
     <dependencies>
